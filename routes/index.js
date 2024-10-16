@@ -7,6 +7,7 @@ const mine = require('./mine');
 const milestone = require('./milestone');
 const character = require('./character');
 const etc = require('./other');
+const activity = require('./activity');
 
 router.use('/user', user);
 router.use('/shop', shop);
@@ -14,5 +15,6 @@ router.use('/mine', mine);
 router.use('/milestone', milestone);
 router.use('/character', character);
 router.use('/etc', etc);
+router.use('/activity', activity);
 
 module.exports = router;

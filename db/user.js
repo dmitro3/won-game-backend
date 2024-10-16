@@ -58,11 +58,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    lastPointsUpdateTimestamp: {
-        type: Date,
-        default: 0,
-    },
-    lastEnergyUpdateTimestamp: {
+    lastLoginTimestamp: {
         type: Date,
         default: 0,
     },

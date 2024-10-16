@@ -8,11 +8,13 @@ const userData = async (req, res) => {
     let telegramId = req.params.id;
     let { name } = req.body;
     let user = await User.findOne({telegramId});
-    console.log("Save Data", telegramId, user);
+    let lastLoginTimestamp = Date.now();
     if(!user) {
         user = new User({telegramId, name});
         user.save();
     }
+    user.lastLoginTimestamp = lastLoginTimestamp;
+    user.save();
     const level = await Level.findOne({levelIndex: user.levelIndex});
     return res.json({status: true, data: user, level: level});
 }

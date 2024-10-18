@@ -18,6 +18,14 @@ const activitySchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    isDailyReceived: {
+        type: Boolean,
+        default: false,
+    },
+    isDTapReceived: {
+        type: Boolean,
+        default: false,
+    },
     lastTappedTime: {
         type: Date,
         default: 0,
@@ -25,7 +33,7 @@ const activitySchema = new mongoose.Schema({
     lastLoginTime: {
         type: Date,
         default: 0,
-    }
+    },
 });
 
 const Activity = mongoose.model('Activity', activitySchema);

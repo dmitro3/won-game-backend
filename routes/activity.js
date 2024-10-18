@@ -3,7 +3,7 @@ const router = express.Router();
 
 const ctrl = require('../controllers/activity');
 
-router.post('/:id', ctrl.activityData);
+router.post('/:id', ctrl.viewActivity);
 router.put('/:id', ctrl.updateActivity);
 
 module.exports = router;

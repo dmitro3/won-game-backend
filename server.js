@@ -19,6 +19,10 @@ mongoose.connect(process.env.MONGODB_URI)
 const router = require('./routes');
 app.use('/api', router);
 
+app.get('/version', (req, res) => {
+    res.send("API Version : 101801");
+});
+
 app.get('*', (req, res) => {
     res.json({
         message: 'API is running...',

@@ -16,6 +16,8 @@ const userData = async (req, res) => {
     level1 = await Level.findOne({levelIndex: user.levelIndex});
     if(user.levelIndex == 6) level2 = level1;
     else level2 = await Level.findOne({levelIndex: user.levelIndex + 1});
+    console.log("User", user);
+    console.log("Level", level1, level2);
     return res.json({status: true, data: user, level: [level1, level2]});
 }
 
@@ -31,6 +33,8 @@ const updateUser = async (req, res) => {
         level1 = await Level.findOne({levelIndex: levelIndex});
         if(levelIndex == 6) level2 = level1;
         else level2 = await Level.findOne({levelIndex: levelIndex + 1});
+        console.log("User", user);
+        console.log("Level", level1, level2);
         return res.json({status: true, data: result, level: [level1, level2]});
     }
     else {  

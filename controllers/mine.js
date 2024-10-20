@@ -1,9 +1,6 @@
 const Mine = require('../db/mineItem');
 
 const mineData = (req, res) => {
-    let telegramId = req.params.id;
-    let { name } = req.body;
-
     Mine.find({
     }).then(info => {
         return res.json({status: true, data: info});
@@ -18,7 +15,6 @@ const mineData = (req, res) => {
 
 const mineType = async (req, res) => {
     let { type } = req.body;
-    console.log("type---",type);
     const mine = await Mine.find({type: type});
     if (mine) {
         return res.json({status: true, data: mine});
@@ -33,9 +29,6 @@ const mineType = async (req, res) => {
 }
 
 const mineIndi = async (req, res) => {
-    let telegramId = req.params.id;
-    let { name } = req.body;
-
     const mine = await Mine.findOne({isWear: true});
     if (mine) {
         console.log(mine);
@@ -51,8 +44,7 @@ const mineIndi = async (req, res) => {
 }
 
 const mineDetail = async (req, res) => {
-    let telegramId = req.params.id;
-    let { name, id } = req.body;
+    let { id } = req.body;
 
     const mine = await Mine.findById(id);
     if (mine) {
@@ -69,8 +61,7 @@ const mineDetail = async (req, res) => {
 }
 
 const wearItem = async (req, res) => {
-    let telegramId = req.params.id;
-    let { name, id, type } = req.body;
+    let { id, type } = req.body;
     const past = await Mine.findOne({ isWear: true, type: type});
     if(past) await Mine.findByIdAndUpdate(past.id, {
         isWear: false

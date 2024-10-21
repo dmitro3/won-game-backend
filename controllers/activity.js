@@ -17,6 +17,7 @@ const viewActivity = async (req, res) => {
         let curr = new Date(lastLoginTime);
         if(curr.getDate() - prev.getDate() >= 1) {
             activity.tapLimit = level.tapLimit;
+            activity.isDailyReceived = false;
         }
     }
     activity.lastLoginTime = lastLoginTime;

@@ -19,7 +19,6 @@ const viewCharacters = async (req, res) => {
 const unlockCharacter = async (req, res) => {
     let telegramId = req.params.id;
     let { name, id } = req.body;
-    console.log("id-------", id);
     
     const character = await Character.findById(id);
     if (character) {

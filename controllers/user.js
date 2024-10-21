@@ -24,6 +24,7 @@ const userData = async (req, res) => {
 const updateUser = async (req, res) => {
     let telegramId = req.params.id;
     let { levelIndex } = req.body;
+    if (!levelIndex) levelIndex = 1;
     let level1, level2;
     const user = await User.findOne({ telegramId: telegramId});
     if (user) {
@@ -41,7 +42,29 @@ const updateUser = async (req, res) => {
         console.log("Matching row not found");
         res.json({
             status: false,
-            data: err,
+            data: "No matched rows",
+        });
+    }
+}
+
+const updateToken = async (req, res) => {
+    let telegramId = req.params.id;
+    let { tokenToAdd } = req.body;
+
+    const user = await User.findOne({ telegramId: telegramId});
+    if (user) {
+        console.log("user", user);
+        const result = await User.findByIdAndUpdate(user.id, {
+            tokens: user.tokens + tokenToAdd,
+        }, { new: true });
+
+        return res.json({status: true, data: user.tokens + tokenToAdd});
+    }
+    else {  
+        console.log("Matching row not found");
+        res.json({
+            status: false,
+            data: "No matched rows",
         });
     }
 }
@@ -54,5 +77,6 @@ const ranking = async (req, res) => {
 module.exports = {
     userData,
     updateUser,
+    updateToken,
     ranking,
 };

@@ -15,10 +15,25 @@ const shopData = (req, res) => {
     });
 }
 
+const makeItem = (req, res) => {
+    let {title, type, attribute, levelIndex, price, imageSrc } = req.body;
+    let item = new Shop({
+        title: title,
+        type: type,
+        attribute: attribute, 
+        levelIndex: levelIndex,
+        price: price, 
+        imageSrc: imageSrc,
+        isBuy: false
+    });
+
+    item.save();
+    return res.json({status: true, data: item});
+}
+
 const buyItem = async (req, res) => {
     let telegramId = req.params.id;
     let { name, id } = req.body;
-    console.log("id-------", id);
     
     const shop = await Shop.findById(id);
     if (shop) {
@@ -54,4 +69,5 @@ const buyItem = async (req, res) => {
 module.exports = {
     shopData,
     buyItem,
+    makeItem
 };

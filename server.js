@@ -29,8 +29,7 @@ app.use('/api_token', (req, res) => {
     }
 
     const token = jwt.sign(data, jwtSecretKey);
-
-    res.send(token);
+    res.json({token});
 });
 
 app.get('/version', (req, res) => {

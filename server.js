@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const verify = require('./milddleware/jwt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.PORT || 5002;
@@ -17,7 +19,19 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 const router = require('./routes');
-app.use('/api', router);
+app.use('/api', verify, router);
+app.use('/api_token', (req, res) => {
+    let telegramId = req.params.id;
+    let jwtSecretKey = process.env.JWT_SECRET_KEY;
+    let data = {
+        time: Date(),
+        userId: telegramId,
+    }
+
+    const token = jwt.sign(data, jwtSecretKey);
+
+    res.send(token);
+});
 
 app.get('/version', (req, res) => {
     res.send("API Version : 101801");

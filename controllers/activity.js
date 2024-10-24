@@ -7,7 +7,7 @@ const viewActivity = async (req, res) => {
     let { name } = req.body;
     let activity = await Activity.findOne({telegramId});
     let user = await User.findOne({telegramId});
-    let level = await Level.findOne({levelIndex: user.levelIndex});
+    let level = await Level.findOne({levelIndex: user ? user.levelIndex : 1});
     let lastLoginTime = Date.now();
     if(!activity) {
         activity = new Activity({telegramId, name});

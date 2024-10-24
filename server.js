@@ -54,3 +54,6 @@ const startServer = () => {
 };
 
 startServer();
+
+// Cron job..
+require('./crons');

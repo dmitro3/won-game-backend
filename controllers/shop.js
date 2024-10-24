@@ -2,17 +2,10 @@ const Shop = require('../db/shopItem');
 const Level = require('../db/level');
 const Mine = require('../db/mineItem');
 
-const shopData = (req, res) => {
-    Shop.find({
-    }).then(info => {
-        return res.json({status: true, data: info});
-    }).catch(err => {
-        console.log("DB Error", err);
-        res.json({
-            status: false,
-            data: err,
-        });
-    });
+const shopData = async (req, res) => {
+    const info = await Shop.find({});
+    if (info.length == 0) return res.status(460).send("No items to buy! Please refresh the page!");
+    res.json({data: info});
 }
 
 const makeItem = (req, res) => {
@@ -28,7 +21,7 @@ const makeItem = (req, res) => {
     });
 
     item.save();
-    return res.json({status: true, data: item});
+    return res.json({data: item});
 }
 
 const buyItem = async (req, res) => {
@@ -36,34 +29,26 @@ const buyItem = async (req, res) => {
     let { name, id } = req.body;
     
     const shop = await Shop.findById(id);
-    if (shop) {
-        let mine = new Mine({
-            telegramId: telegramId,
-            name: name,
-            type: shop.type,
-            attribute: shop.attribute,
-            levelIndex: shop.levelIndex,
-            price: shop.price,
-            title: shop.title,
-            imageSrc: shop.imageSrc,
-            isWear: false
-        });
+    if (!shop) return res.status(460).send("No item exists! Please refresh the page!");
 
-        mine.save();
-        const result = await Shop.findByIdAndUpdate(id, {
-            isBuy: true
-        }, { new: true });
-        console.log(result);
-        const updated = await Shop.find({});
-        return res.json({status: true, data: updated});
-    }
-    else {
-        console.log("Matching row not found");
-        res.json({
-            status: false,
-            data: err,
-        });
-    }
+    let mine = new Mine({
+        telegramId: telegramId,
+        name: name,
+        type: shop.type,
+        attribute: shop.attribute,
+        levelIndex: shop.levelIndex,
+        price: shop.price,
+        title: shop.title,
+        imageSrc: shop.imageSrc,
+        isWear: false
+    });
+
+    mine.save();
+    await Shop.findByIdAndUpdate(id, {
+        isBuy: true
+    }, { new: true });
+    const updated = await Shop.find({});
+    return res.json({data: updated});
 }
 
 module.exports = {

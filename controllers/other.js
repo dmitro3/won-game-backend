@@ -4,13 +4,13 @@ const Level = require('../db/level');
 
 const monsters = async (req, res) => {
     const monsters = await Monster.find();
-    return res.json({status: true, data: monsters});
+    return res.json({data: monsters});
 }
 
 const challenge = async (req, res) => {
     let idx = req.params.id;
     const challenge = await Challenge.findOne({challengeIndex: idx});
-    return res.json({status: true, data: challenge});
+    return res.json({data: challenge});
 }
 
 const addLevel = (req, res) => {
@@ -26,7 +26,7 @@ const addLevel = (req, res) => {
     });
 
     item.save();
-    return res.json({status: true, data: item});
+    return res.json({data: item});
 }
 
 const addMonster = (req, res) => {
@@ -43,7 +43,7 @@ const addMonster = (req, res) => {
     });
 
     item.save();
-    return res.json({status: true, data: item});
+    return res.json({data: item});
 }
 
 const addChallenge = (req, res) => {
@@ -60,7 +60,7 @@ const addChallenge = (req, res) => {
     });
 
     item.save();
-    return res.json({status: true, data: item});
+    return res.json({data: item});
 }
 
 module.exports = {

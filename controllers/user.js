@@ -83,11 +83,9 @@ const updateUserWithActivity = async (req, res) => {
     if(curr.getDate() - prev.getDate() == 1) c_date++;
     else if(curr.getDate() - prev.getDate() > 1) c_date = 0;
 
-    activity.lastTappedTime = lastTappedTime;
-    activity.save();
-
     await Activity.findByIdAndUpdate(activity.id, {
         ...req.body,
+        lastTappedTime,
         continueDate: c_date,
     }, { new: true });
 

@@ -28,7 +28,7 @@ const unlockCharacter = async (req, res) => {
     let { name, id } = req.body;
     
     const character = await Character.findById(id);
-    if (characters.length == 0) return res.status(460).send("No matched chacracter! Please refresh the page!");
+    if (!character) return res.status(460).send("No matched chacracter! Please refresh the page!");
 
     let mine = new Mine({
         telegramId: telegramId,

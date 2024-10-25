@@ -6,7 +6,6 @@ const verify = (req, res, next) => {
     try {
         const token = req.header(tokenHeaderKey);
         const verified = jwt.verify(token, jwtSecretKey);
-
         if (verified) {
             return next();
         } else {

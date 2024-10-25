@@ -5,11 +5,20 @@ const Activity = require('../db/activity');
 const viewActivity = async (req, res) => {
     let telegramId = req.params.id;
     let { name } = req.body;
+
+    console.log("\n\n viewActivity: Create activity with tap limit! ====");
+
     let user = await User.findOne({telegramId});
-    if (!user) return res.status(460).send("No matched user! Please refresh the page!");
+    if (!user) {
+        console.log(" ====> No matched user exist : telegram id " + telegramId);
+        return res.status(460).send("No matched user! Please refresh the page!");
+    }
 
     let level = await Level.findOne({levelIndex: user ? user.levelIndex : 1});
-    if (!level) return res.status(460).send("No matched level! Please refresh the page!");
+    if (!level) {
+        console.log(" ====> No matched level exist : level index " + user.levelIndex);
+        return res.status(460).send("No matched level! Please refresh the page!");
+    }
 
     let activity = await Activity.findOne({telegramId});
     let lastLoginTime = Date.now();
@@ -34,8 +43,14 @@ const viewActivity = async (req, res) => {
 
 const updateActivity = async (req, res) => {
     let telegramId = req.params.id;
+
+    console.log("\n\n updateActivity: Update activity with tap limit! ====");
+
     let activity = await Activity.findOne({telegramId});
-    if (!activity) return res.status(460).send("No matched activity! Please refresh the page!");
+    if (!activity) {
+        console.log(" ====> No matched actcivity exist : telegram id " + telegramId);
+        return res.status(460).send("No matched activity! Please refresh the page!");
+    }
 
     let lastTappedTime = Date.now();
     let prev = new Date(activity.lastTappedTime);

@@ -7,8 +7,11 @@ const userData = async (req, res) => {
     let { name } = req.body;
     let level1, level2;
 
+    console.log("\n\n userData: Get user data and levels, create user for the first login! ====");
+
     let user = await User.findOne({telegramId});
     if(!user) {
+        console.log(" ====> No matched user exist, need to create : telegram id " + telegramId);
         user = new User({telegramId, name});
         user.save();
     }
@@ -18,6 +21,7 @@ const userData = async (req, res) => {
     else level2 = await Level.findOne({levelIndex: user.levelIndex + 1});
 
     if (!level1 || !level2) {
+        console.log(" ====> No matched level exist : level index " + user.levelIndex);
         return res.status(460).send("No matched level! Please refresh the page!");
     }
 
@@ -26,9 +30,12 @@ const userData = async (req, res) => {
 
 const updateUser = async (req, res) => {
     let telegramId = req.params.id;
-    const user = await User.findOne({ telegramId: telegramId});
 
+    console.log("\n\n updateUser: Update user! ====");
+
+    const user = await User.findOne({ telegramId: telegramId});
     if (!user) {
+        console.log(" ====> No matched user exist : telegram id " + telegramId);
         return res.status(460).send("No matched user! Please refresh the page!");
     }
 
@@ -43,8 +50,11 @@ const updateToken = async (req, res) => {
     let telegramId = req.params.id;
     let { tokenToAdd } = req.body;
 
+    console.log("\n\n updateToken: Update user token! ====");
+
     const user = await User.findOne({ telegramId: telegramId});
     if (!user) {
+        console.log(" ====> No matched user exist : telegram id " + telegramId);
         return res.status(460).send("No matched user! Please refresh the page!");
     }
 
@@ -56,6 +66,7 @@ const updateToken = async (req, res) => {
 }
 
 const ranking = async (req, res) => {
+    console.log("\n\n ranking: Get user ranking! ====");
     const users = await User.find().sort({ tokens: -1});
     return res.json({data: users});
 }
@@ -63,10 +74,11 @@ const ranking = async (req, res) => {
 const updateUserWithActivity = async (req, res) => {
     let telegramId = req.params.id;
 
-    console.log("Update User With Activity");
+    console.log("\n\n updateUserWithActivity: Update user and his activity! ====");
 
     const user = await User.findOne({ telegramId: telegramId});
     if (!user) {
+        console.log(" ====> No matched user exist : telegram id " + telegramId);
         return res.status(460).send("No matched user! Please refresh the page!");
     }
     await User.findByIdAndUpdate(user.id, {
@@ -74,7 +86,10 @@ const updateUserWithActivity = async (req, res) => {
     }, { new: true });
 
     let activity = await Activity.findOne({telegramId});
-    if (!activity) return res.status(460).send("No matched activity! Please refresh the page!");
+    if (!activity) {
+        console.log(" ====> No matched activity exist : telegram id " + telegramId);
+        return res.status(460).send("No matched activity! Please refresh the page!");
+    }
 
     let lastTappedTime = Date.now();
     let prev = new Date(activity.lastTappedTime);

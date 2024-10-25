@@ -2,13 +2,21 @@ const Character = require('../db/character');
 const Mine = require('../db/mineItem');
 
 const viewCharacters = async (req, res) => {
+    console.log("\n\n viewCharacters: Get characters! ====");
     const characters = await Character.find({});
-    if (characters.length == 0) return res.status(460).send("No chacracters! Please refresh the page!");
+    if (characters.length == 0) {
+        console.log(" ====> No characters!");
+        return res.status(460).send("No chacracters! Please refresh the page!");
+    }
+
     return res.json({data: characters});
 }
 
 const addCharacter = async (req, res) => {
     let {title, energy, attack, defence, price, imageSrc} = req.body;
+
+    console.log("\n\n addCharacter: Save new character! ====");
+
     let item = new Character({
         title: title,
         energy: energy,
@@ -18,7 +26,6 @@ const addCharacter = async (req, res) => {
         imageSrc: imageSrc,
         isLock: false
     });
-
     item.save();
     return res.json({data: item});
 }
@@ -27,8 +34,13 @@ const unlockCharacter = async (req, res) => {
     let telegramId = req.params.id;
     let { name, id } = req.body;
     
+    console.log("\n\n unlockCharacter: Unlock bought characters! ====");
+
     const character = await Character.findById(id);
-    if (!character) return res.status(460).send("No matched chacracter! Please refresh the page!");
+    if (!character) {
+        console.log(" ====> No matched character exist : character id " + id);
+        return res.status(460).send("No matched chacracter! Please refresh the page!");
+    }
 
     let mine = new Mine({
         telegramId: telegramId,
